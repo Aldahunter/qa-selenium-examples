@@ -14,12 +14,18 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 public class TestSwagLabs {
-	
-	String urlRoot = "https://www.saucedemo.com/";
-	String webDriverPath = "C:\\Program Files\\Selenium\\webdrivers\\geckodriver.exe";
-	WebDriver driver;
-	 
 
+	WebDriver driver;
+	String webDriverPath = "C:\\Program Files\\Selenium\\webdrivers\\geckodriver.exe";
+    
+	String urlRoot = "https://www.saucedemo.com/";
+	By usernameSelector = By.cssSelector("#user-name");
+    By passwordSelector = By.cssSelector("#password");
+    By loginButtonSelector = By.cssSelector("#login-button");
+    By invetoryItemsSelector = By.className("inventory_item");
+    By errorSelector = By.cssSelector("h3[data-test='error']");
+	
+	 
 	@Before
 	public void setUp() {
 		// Set the system property for web driver's path
@@ -43,9 +49,9 @@ public class TestSwagLabs {
 	// Helper function
 	private void login(String username, String password) {
 		// Get page elements
-		WebElement usernameInput = driver.findElement(By.cssSelector("#user-name"));
-		WebElement passwordInput = driver.findElement(By.cssSelector("#password"));
-		WebElement loginButton = driver.findElement(By.cssSelector("#login-button"));
+		WebElement usernameInput = driver.findElement(usernameSelector);
+		WebElement passwordInput = driver.findElement(passwordSelector);
+		WebElement loginButton = driver.findElement(loginButtonSelector);
        
 		// Login to page
 		usernameInput.sendKeys(username);
@@ -64,7 +70,7 @@ public class TestSwagLabs {
 		login(username, password);
 		
 		// Check we have logged in
-		List<WebElement> inventoryItems = driver.findElements(By.className("inventory_item"));
+		List<WebElement> inventoryItems = driver.findElements(invetoryItemsSelector);
 		assertTrue(inventoryItems.size() > 0);
 	}
 	
@@ -79,8 +85,24 @@ public class TestSwagLabs {
 		// Login to page
 		login(username, password);
 		
-		// Check we have logged in
-		WebElement errorBox = driver.findElement(By.cssSelector("h3[data-test='error']"));
+		// Check we have been locked out
+		WebElement errorBox = driver.findElement(errorSelector);
+		assertEquals(expected, errorBox.getText());
+	}
+	
+	@Test
+	public void testWrongPasswordLogin() {
+		
+		// Input and expected values
+		String username = "problem_user";
+		String password = "wrong";
+		String expected = "Epic sadface: Username and password do not match any user in this service";
+		
+		// Login to page
+		login(username, password);
+		
+		// Check we have wrong password
+		WebElement errorBox = driver.findElement(errorSelector);
 		assertEquals(expected, errorBox.getText());
 	}
 
