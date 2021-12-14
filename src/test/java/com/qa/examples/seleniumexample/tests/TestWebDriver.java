@@ -1,3 +1,4 @@
+package com.qa.examples.seleniumexample.tests;
 import static org.junit.Assert.*;
 
 import java.time.Duration;
