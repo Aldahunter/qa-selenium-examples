@@ -39,6 +39,19 @@ public class TestSwagLabs {
 		// Close web driver after every test to prevent memory leaks
 		driver.quit();
 	}
+	
+	// Helper function
+	private void login(String username, String password) {
+		// Get page elements
+		WebElement usernameInput = driver.findElement(By.cssSelector("#user-name"));
+		WebElement passwordInput = driver.findElement(By.cssSelector("#password"));
+		WebElement loginButton = driver.findElement(By.cssSelector("#login-button"));
+       
+		// Login to page
+		usernameInput.sendKeys(username);
+		passwordInput.sendKeys(password);
+		loginButton.click();
+    }
 
 	@Test
 	public void testSuccessfulLogin() {
@@ -47,19 +60,28 @@ public class TestSwagLabs {
 		String username = "standard_user";
 		String password = "secret_sauce";
 		
-		// Get page elements
-		WebElement usernameInput = driver.findElement(By.cssSelector("#user-name"));
-		WebElement passwordInput = driver.findElement(By.cssSelector("#password"));
-		WebElement loginButton = driver.findElement(By.cssSelector("#login-button"));
-		
 		// Login to page
-		usernameInput.sendKeys(username);
-		passwordInput.sendKeys(password);
-		loginButton.click();
+		login(username, password);
 		
 		// Check we have logged in
 		List<WebElement> inventoryItems = driver.findElements(By.className("inventory_item"));
 		assertTrue(inventoryItems.size() > 0);
+	}
+	
+	@Test
+	public void testLockedOutUserLogin() {
+		
+		// Input and expected values
+		String username = "locked_out_user";
+		String password = "secret_sauce";
+		String expected = "Epic sadface: Sorry, this user has been locked out.";
+		
+		// Login to page
+		login(username, password);
+		
+		// Check we have logged in
+		WebElement errorBox = driver.findElement(By.cssSelector("h3[data-test='error']"));
+		assertEquals(expected, errorBox.getText());
 	}
 
 }
