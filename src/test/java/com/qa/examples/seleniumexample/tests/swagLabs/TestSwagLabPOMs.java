@@ -85,4 +85,21 @@ public class TestSwagLabPOMs {
 		assertEquals(expectedErrorMessage, errorMessage);
 	}
 
+	@Test
+	public void swagLabWrongPasswordLoginTest() throws IOException {
+		// Input values
+		String username = "problem_user";
+		String password = "wrong";
+		String expectedErrorMessage = "Epic sadface: Username and password do not match any user in this service";
+		screenshotManager.takeAndSaveScreenshot(driver, targetScreenshotDir + "swagLabLockedOutUserLoginTest - Inital Login Page.png");
+		
+		// Perform login using POM
+		String errorMessage = ((SwagLabLoginPageFactory)swagLabLoginPageFactory.login(username, password))
+													                           .getErrorMessage();
+		
+		// Check we have logged in successfully
+		screenshotManager.takeAndSaveScreenshot(driver, targetScreenshotDir + "swagLabLockedOutUserLoginTest - Post Login Page.png");
+		assertEquals(expectedErrorMessage, errorMessage);
+	}
+
 }
