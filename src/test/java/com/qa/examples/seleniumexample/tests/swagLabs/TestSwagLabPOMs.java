@@ -52,8 +52,19 @@ public class TestSwagLabPOMs {
 	}
 
 	@Test
-	public void swagLabLoginTest() {
-		fail("Not yet implemented");
+	public void swagLabLoginTest() throws IOException {
+		// Input values
+		String username = "standard_user";
+		String password = "secret_sauce";
+		screenshotManager.takeAndSaveScreenshot(driver, targetScreenshotDir + "swagLabLoginTest - Inital Login Page.png");
+		
+		// Perform login using POM
+		List<WebElement> inventoryItems = swagLabLoginPageFactory.login(username, password)
+																 .getInventoryItems();
+		
+		// Check we have logged in successfully
+		screenshotManager.takeAndSaveScreenshot(driver, targetScreenshotDir + "swagLabLoginTest - Post Login Page.png");
+		assertTrue(inventoryItems.size() > 0);
 	}
 
 }
