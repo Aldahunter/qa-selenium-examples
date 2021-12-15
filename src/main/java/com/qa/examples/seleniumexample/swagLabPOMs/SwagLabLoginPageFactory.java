@@ -3,15 +3,16 @@ package com.qa.examples.seleniumexample.swagLabPOMs;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class SwagLabLoginPageFactory {
-	private String URL = "https://www.saucedemo.com/";
-	private String expectTitle = "Swag Labs";
+public class SwagLabLoginPageFactory extends AbstractSwagLabPageFactory {
+	static String URL = "https://www.saucedemo.com/";
+	static String expectTitle = "Swag Labs";
 
 	private WebDriver driver;
 	
 	private By usenameInpSelector = By.id("user-name");
 	private By passwordInpSelector = By.id("password");
 	private By loginBtnSelector = By.id("login-button");
+	private By errorMsgSelector = By.cssSelector("h3[data-test='error']");
 	
 	
 	public SwagLabLoginPageFactory(WebDriver driver) {
@@ -26,11 +27,20 @@ public class SwagLabLoginPageFactory {
 	}
 	
 	
-	public SwagLabHomePageFactory login(String username, String password) {
+	public AbstractSwagLabPageFactory login(String username, String password) {
 		driver.findElement(usenameInpSelector).sendKeys(username);
 		driver.findElement(passwordInpSelector).sendKeys(password);
 		driver.findElement(loginBtnSelector).click();
-		return new SwagLabHomePageFactory(driver);
+		if (driver.getCurrentUrl().equals(SwagLabHomePageFactory.URL)) {
+			return new SwagLabHomePageFactory(driver);
+		} else {
+			return this;
+		}
+		
+	}
+	
+	public String getErrorMessage() {
+		return driver.findElement(errorMsgSelector).getText();
 	}
 
 }

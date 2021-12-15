@@ -13,6 +13,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import com.qa.examples.seleniumexample.swagLabPOMs.SwagLabHomePageFactory;
 import com.qa.examples.seleniumexample.swagLabPOMs.SwagLabLoginPageFactory;
 import com.qa.examples.seleniumexample.utilities.ScreenshotManager;
 
@@ -59,8 +60,8 @@ public class TestSwagLabPOMs {
 		screenshotManager.takeAndSaveScreenshot(driver, targetScreenshotDir + "swagLabSuccessfulLoginTest - Inital Login Page.png");
 		
 		// Perform login using POM
-		List<WebElement> inventoryItems = swagLabLoginPageFactory.login(username, password)
-																 .getInventoryItems();
+		List<WebElement> inventoryItems = ((SwagLabHomePageFactory)swagLabLoginPageFactory.login(username, password))
+																                          .getInventoryItems();
 		
 		// Check we have logged in successfully
 		screenshotManager.takeAndSaveScreenshot(driver, targetScreenshotDir + "swagLabSuccessfulLoginTest - Post Login Page.png");
@@ -76,8 +77,8 @@ public class TestSwagLabPOMs {
 		screenshotManager.takeAndSaveScreenshot(driver, targetScreenshotDir + "swagLabLockedOutUserLoginTest - Inital Login Page.png");
 		
 		// Perform login using POM
-		String errorMessage = swagLabLoginPageFactory.login(username, password)
-													 .getErrorMessage();
+		String errorMessage = ((SwagLabLoginPageFactory)swagLabLoginPageFactory.login(username, password))
+													                           .getErrorMessage();
 		
 		// Check we have logged in successfully
 		screenshotManager.takeAndSaveScreenshot(driver, targetScreenshotDir + "swagLabLockedOutUserLoginTest - Post Login Page.png");

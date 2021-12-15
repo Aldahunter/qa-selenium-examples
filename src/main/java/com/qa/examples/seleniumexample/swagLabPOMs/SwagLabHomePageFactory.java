@@ -6,9 +6,9 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class SwagLabHomePageFactory {
-	private String URL = "https://www.saucedemo.com/inventory.html";
-	private String expectTitle = "Swag Labs";
+public class SwagLabHomePageFactory extends AbstractSwagLabPageFactory {
+	static String URL = "https://www.saucedemo.com/inventory.html";
+	static String expectTitle = "Swag Labs";
 
 	private WebDriver driver;
 
@@ -28,10 +28,5 @@ public class SwagLabHomePageFactory {
 	
 	public List<WebElement> getInventoryItems() {
 		return driver.findElements(inventoryItemDivSelector);
-	}
-
-	public String getErrorMessage() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
