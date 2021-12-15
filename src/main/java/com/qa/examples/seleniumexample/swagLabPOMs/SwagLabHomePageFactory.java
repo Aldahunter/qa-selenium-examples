@@ -29,4 +29,9 @@ public class SwagLabHomePageFactory {
 	public List<WebElement> getInventoryItems() {
 		return driver.findElements(inventoryItemDivSelector);
 	}
+
+	public String getErrorMessage() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

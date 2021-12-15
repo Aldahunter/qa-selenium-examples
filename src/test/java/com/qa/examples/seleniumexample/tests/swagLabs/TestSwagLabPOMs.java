@@ -52,19 +52,36 @@ public class TestSwagLabPOMs {
 	}
 
 	@Test
-	public void swagLabLoginTest() throws IOException {
+	public void swagLabSuccessfulLoginTest() throws IOException {
 		// Input values
 		String username = "standard_user";
 		String password = "secret_sauce";
-		screenshotManager.takeAndSaveScreenshot(driver, targetScreenshotDir + "swagLabLoginTest - Inital Login Page.png");
+		screenshotManager.takeAndSaveScreenshot(driver, targetScreenshotDir + "swagLabSuccessfulLoginTest - Inital Login Page.png");
 		
 		// Perform login using POM
 		List<WebElement> inventoryItems = swagLabLoginPageFactory.login(username, password)
 																 .getInventoryItems();
 		
 		// Check we have logged in successfully
-		screenshotManager.takeAndSaveScreenshot(driver, targetScreenshotDir + "swagLabLoginTest - Post Login Page.png");
+		screenshotManager.takeAndSaveScreenshot(driver, targetScreenshotDir + "swagLabSuccessfulLoginTest - Post Login Page.png");
 		assertTrue(inventoryItems.size() > 0);
+	}
+
+	@Test
+	public void swagLabLockedOutUserLoginTest() throws IOException {
+		// Input values
+		String username = "locked_out_user";
+		String password = "secret_sauce";
+		String expectedErrorMessage = "Epic sadface: Sorry, this user has been locked out.";
+		screenshotManager.takeAndSaveScreenshot(driver, targetScreenshotDir + "swagLabLockedOutUserLoginTest - Inital Login Page.png");
+		
+		// Perform login using POM
+		String errorMessage = swagLabLoginPageFactory.login(username, password)
+													 .getErrorMessage();
+		
+		// Check we have logged in successfully
+		screenshotManager.takeAndSaveScreenshot(driver, targetScreenshotDir + "swagLabLockedOutUserLoginTest - Post Login Page.png");
+		assertEquals(expectedErrorMessage, errorMessage);
 	}
 
 }
